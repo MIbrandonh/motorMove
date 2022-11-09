@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -16,12 +18,20 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    m_shooterMotor.set(0.1);
+
     // This method will be called once per scheduler run
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  }
+
+  public CommandBase setShooter() {
+    return new RunCommand(() -> m_shooterMotor.set(0.1), this);
+  }
+
+  public CommandBase stopShooter() {
+    return new RunCommand(() -> m_shooterMotor.set(0), this);
   }
 }

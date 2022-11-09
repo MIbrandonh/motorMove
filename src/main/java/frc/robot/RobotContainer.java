@@ -10,6 +10,8 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -22,9 +24,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ShooterSubsystem m_exampleSubsystem = new ShooterSubsystem();
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
-  private final ShooterCommand m_autoCommand = new ShooterCommand(m_exampleSubsystem);
+  private final ShooterCommand m_autoCommand = new ShooterCommand(m_shooter);
+  public static XboxController xbox = new XboxController(0);
+  Button feedAndShootButton = new Button(() -> xbox.getRightTriggerAxis() >= 0.3);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -33,7 +37,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    CommandScheduler.getInstance().registerSubsystem(m_exampleSubsystem);
+    m_shooter.setDefaultCommand(m_shooter.stopShooter());
   }
 
   /**
@@ -45,6 +49,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    feedAndShootButton.whenHeld(m_shooter.setShooter());
   }
 
   /**
